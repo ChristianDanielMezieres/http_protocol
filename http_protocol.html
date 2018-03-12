@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Javascript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <div class container="containerr"></div>
+    <form>
+        <h1>
+            <label for="town">Ville</label>
+        </h1>
+        <p>
+            <input type="text" id="town">
+        </p>
+        <button type="button" class="bouton" value ="send" onclick="affichageData()">send</button>
+    </form>
+    <h1>Temperature:
+        <span id="DisplayTemperature"></span> °C</h1>
+    <h1 id="DisplayWeather"></h1>
+    </div>
+
+
+    <script>
+
+        function affichageData() {
+            
+            var town = document.getElementById("town").value;
+
+        const req = new XMLHttpRequest();
+
+
+        req.onreadystatechange = function (event) {
+            // XMLHttpRequest.DONE === 4
+            if (this.readyState === XMLHttpRequest.DONE) {
+                if (this.status === 200) {
+                    affichageParse(this.responseText);
+                } else {
+                    console.log("Status de la réponse: %d (%s)", this.status, this.statusText);
+                }
+            }
+        }
+
+       
+
+        req.open('GET', 'http://api.openweathermap.org/data/2.5/weather?q=' + town + '&APPID=5cf748effa9863e38012ad4e4227f300&lang=fr&units=metric', true);
+        req.send(null);       
+
+        function affichageParse(BaseInfo) {
+            
+           
+            BaseInfo = JSON.parse(BaseInfo);
+            console.log(BaseInfo);
+            var temperature = document.getElementById("DisplayTemperature");
+         
+
+            temperature.innerText = BaseInfo.main.temp;
+            //document.getElementById("DisplayWeather").innerHTML = weather;
+             
+
+         }
+
+     }
+
+    </script>
+
+</body>
+
+</html>
